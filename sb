@@ -39,7 +39,7 @@ else
       if [[ $prevVid == $newestVid ]]; then
         echo -e "$username:\tNo new video"
       else
-        echo "$username:\t$newestVid"
+        echo -e "$username:\t$newestVid"
         newfile=$(awk -v pattern="^, $username" -v newVid="- $newestVid" '{if($0 ~ pattern)x=NR+2;}{if(NR!=x)print; else print (newVid)}' $file)
         echo "$newfile" > $file
       fi
