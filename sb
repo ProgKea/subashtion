@@ -18,6 +18,7 @@ elif [[ $command == "check" && $(grep "^, $username" $file | wc -l) != 0 ]]; the
     echo "No new video";
   else
     echo "$newestVid"
+    notify-send "$newestVid"
     newfile=$(awk -v pattern="^, $username" -v newVid="- $newestVid" '{if($0 ~ pattern)x=NR+2;}{if(NR!=x)print; else print (newVid)}' $file)
     echo "$newfile" > $file
   fi
@@ -40,6 +41,7 @@ else
         echo -e "$username:\tNo new video"
       else
         echo -e "$username:\t$newestVid"
+        notify-send "$username" "$newestVid"
         newfile=$(awk -v pattern="^, $username" -v newVid="- $newestVid" '{if($0 ~ pattern)x=NR+2;}{if(NR!=x)print; else print (newVid)}' $file)
         echo "$newfile" > $file
       fi
