@@ -7,21 +7,26 @@ userID=$3
 file=/usr/share/subashtion/subscriptions.txt
 newestVid=$(curl -s "https://vid.puffyan.us/channel/$userID" | grep dir | awk '{if(NR==2) print substr($0, 31, length($0)-34)}')
 
-if [[ $command == "add" && $(grep ", $username" $file | wc -l) == 0 && $newestVid != "" ]]; then
-  echo -e ", $username\n. $userID\n- $newestVid" >> $file
-  echo "Latest video: $newestVid"
-elif [[ $command == "check" && $(grep "^, $username" $file | wc -l) != 0 ]]; then
+check()
+{
   userID=$(awk -v pattern="$username" '{if($0~pattern) x=NR+1} (NR==x){print substr($0, 3)}' $file)
   newestVid=$(curl -s "https://vid.puffyan.us/channel/$userID" | grep dir | awk '{if(NR==2) print substr($0, 31, length($0)-34)}')
   prevVid=$(awk -v pattern="$username" '{if($0~pattern) x=NR+2} (NR==x){print substr($0, 3)}' $file)
   if [[ $prevVid == $newestVid ]]; then
-    echo "No new video";
+    echo -e "$username:\tNo new video"
   else
-    echo "$newestVid"
-    notify-send "$newestVid"
+    echo -e "$username:\t$newestVid"
+    notify-send "$username" "$newestVid"
     newfile=$(awk -v pattern="^, $username" -v newVid="- $newestVid" '{if($0 ~ pattern)x=NR+2;}{if(NR!=x)print; else print (newVid)}' $file)
     echo "$newfile" > $file
   fi
+}
+
+if [[ $command == "add" && $(grep ", $username" $file | wc -l) == 0 && $newestVid != "" ]]; then
+  echo -e ", $username\n. $userID\n- $newestVid" >> $file
+  echo "Latest video: $newestVid"
+elif [[ $command == "check" && $(grep "^, $username" $file | wc -l) != 0 ]]; then
+  check
 elif [[ $command == "remove" && $(grep "^, $username" $file | wc -l) != 0 ]]; then
   newfile=$(awk -v pattern="^, $username" '{if($0 ~ pattern)x=NR+2;}!(NR<=x){print}' $file)
   if [[ $newfile ]]; then
@@ -34,17 +39,7 @@ else
   do
     username=$(echo "$line" | awk '/^,/{print substr($0, 3)}')
     if [[ $username ]]; then
-      userID=$(awk -v pattern="$username" '{if($0~pattern) x=NR+1} (NR==x){print substr($0, 3)}' $file)
-      newestVid=$(curl -s "https://vid.puffyan.us/channel/$userID" | grep dir | awk '{if(NR==2) print substr($0, 31, length($0)-34)}')
-      prevVid=$(awk -v pattern="$username" '{if($0~pattern) x=NR+2} (NR==x){print substr($0, 3)}' $file)
-      if [[ $prevVid == $newestVid ]]; then
-        echo -e "$username:\tNo new video"
-      else
-        echo -e "$username:\t$newestVid"
-        notify-send "$username" "$newestVid"
-        newfile=$(awk -v pattern="^, $username" -v newVid="- $newestVid" '{if($0 ~ pattern)x=NR+2;}{if(NR!=x)print; else print (newVid)}' $file)
-        echo "$newfile" > $file
-      fi
+      check
     fi
   done < $file
 fi
