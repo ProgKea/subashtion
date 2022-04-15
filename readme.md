@@ -2,13 +2,9 @@
 
 Subashtion is a cli tool that allows you to subscribe to youtubers without a google account.
 
-# usage
-
-sb <command> <arguments>
-
 ## commands
 
-To add a new youtube account type `sb add *username* *userid` to get the userid
+To add a new youtube account type `sb add *username* *userid*` to get the userid
 go to [vid.puffyan.us](https://vid.puffyan.us) and search the person you want
 to subscibe to.
 
