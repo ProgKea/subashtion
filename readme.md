@@ -27,7 +27,7 @@ If you want to use the script everywhere you have to move the script to a bin di
 
 ## dependencies
 
-You only need `awk` and a notification-daemon.
+You only need `awk` and a `notification-daemon`.
 
 ## known problems
 
