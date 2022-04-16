@@ -13,7 +13,6 @@ check()
   newestVid=$(curl -s "https://vid.puffyan.us/channel/$userID" | grep dir | awk '{if(NR==2) print substr($0, 31, length($0)-34)}')
   prevVid=$(awk -v pattern="$username" '{if($0~pattern) x=NR+2} (NR==x){print substr($0, 3)}' $file)
   if [[ $prevVid != $newestVid ]]; then
-    new_vid_found=yes
     notify-send "$username" "$newestVid"
     newfile=$(awk -v pattern="^, $username" -v newVid="- $newestVid" '{if($0 ~ pattern)x=NR+2;}{if(NR!=x)print; else print (newVid)}' $file)
     echo "$newfile" > $file
@@ -34,7 +33,15 @@ elif [[ $command == "remove" && $(grep "^, $username" $file | wc -l) != 0 ]]; th
     echo "$newfile" > $file
   fi
 elif [[ $command == "list" ]]; then
-  grep "^," $file | awk '{print $2}'
+  #grep "^," $file | awk '{print $2}'
+  while read -r line
+  do
+    username=$(echo "$line" | awk '/^,/{print substr($0, 3)}')
+    if [[ $username ]]; then
+      vid=$(awk -v pattern="$username" '{if($0~pattern) x=NR+2} (NR==x){print substr($0, 3)}' $file)
+      printf '%-15s: %s\n' "$username" "$vid"
+    fi
+  done < $file
 else
   while read -r line
   do
@@ -43,7 +50,4 @@ else
       check &
     fi
   done < $file
-  if [[ $new_vid_found != "yes" ]]; then
-    notify-send "No new video was uploaded"
-  fi
 fi
