@@ -20,6 +20,8 @@ uploaded a new video.
 
 ## Installing
 
+Make the script executable with `sudo chmod +x sb`.
+
 You have to create a directory named "subashtion" in /usr/share and a file inside that 
 directory with the name "subscriptions.txt" you can easily change this path in the sb script.
 
