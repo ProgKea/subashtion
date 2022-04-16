@@ -25,6 +25,10 @@ directory with the name "subscriptions.txt" you can easily change this path in t
 
 If you want to use the script everywhere you have to move the script to a bin directory (/bin /usr/local/bin ...).
 
+## dependencies
+
+You only need `awk` and a notification-daemon.
+
 ## known problems
 
 - if a youtube account you subscribed to changes the name of their latest video the script will think that the youtube account uploaded a new video
