@@ -19,6 +19,21 @@ check()
   fi
 }
 
+print_help()
+{
+   # Display Help
+   echo "Syntax: sb [command] [arguments]"
+   echo 
+   echo "commands:"
+   echo "add [username] [userID]  Subscribe to a youtube account"
+   echo "remove [username]        Unsubscribe a youtube account"
+   echo "check [username]         Check if youtube account uploaded a new video"
+   echo "list                     List all subscriptions"  
+   echo "help                     Print this help message"  
+   echo 
+   echo "You can use sb with no command to run check on all youtube accounts you subscribed to."
+}
+
 if [[ $command == "add" && $(grep ", $username" $file | wc -l) == 0 && $newestVid != "" ]]; then
   echo -e ", $username\n. $userID\n- $newestVid" >> $file
   echo "Latest video: $newestVid"
@@ -41,6 +56,8 @@ elif [[ $command == "list" ]]; then
       printf '%-15s: %s\n' "$username" "$vid"
     fi
   done < $file
+elif [[ $command == "help" ]]; then
+  print_help
 else
   while read -r line
   do
