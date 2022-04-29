@@ -12,7 +12,7 @@ check()
   userID=$(awk -v pattern=", $username$" '{if($0~pattern) x=NR+1} (NR==x){print substr($0, 3)}' $file)
   newestVid=$(curl -s "https://vid.puffyan.us/channel/$userID" | grep dir | awk '{if(NR==2) print substr($0, 31, length($0)-34)}')
   prevVid=$(awk -v pattern=", $username$" '{if($0~pattern) x=NR+2} (NR==x){print substr($0, 3)}' $file)
-  if [[ $prevVid != $newestVid ]]; then
+  if [[ $prevVid != $newestVid && $newestVid != "" ]]; then
     notify-send "$username" "$newestVid"
     newfile=$(awk -v pattern="^, $username" -v newVid="- $newestVid" '{if($0 ~ pattern)x=NR+2;}{if(NR!=x)print; else print (newVid)}' $file)
     echo "$newfile" > $file
