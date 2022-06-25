@@ -4,7 +4,7 @@ command=$1
 username=$2
 userID=$3
 
-file=/usr/share/subashtion/subscriptions.txt
+file=$HOME/.local/share/subashtion/subscriptions.txt
 newestVid=$(curl -s "https://vid.puffyan.us/channel/$userID" | grep dir | awk '{if(NR==2) print substr($0, 31, length($0)-34)}')
 
 check()

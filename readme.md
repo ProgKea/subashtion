@@ -18,15 +18,6 @@ command.
 You can also use the `sb check "username"` command to only check if one person 
 uploaded a new video.
 
-## Installing
-
-Make the script executable with `sudo chmod +x sb`.
-
-You have to create a directory named "subashtion" in /usr/share and a file inside that 
-directory with the name "subscriptions.txt" you can easily change this path in the sb script.
-
-If you want to use the script everywhere you have to move the script to a bin directory (/bin /usr/local/bin ...).
-
 ## dependencies
 
 You only need `awk` and a `notification-daemon`.
