@@ -25,3 +25,7 @@ You only need `awk` and a `notification-daemon`.
 ## known problems
 
 - if a youtube account you subscribed to changes the name of their latest video the script will think that the youtube account uploaded a new video
+
+## Demo
+
+<img src="demo.gif">
